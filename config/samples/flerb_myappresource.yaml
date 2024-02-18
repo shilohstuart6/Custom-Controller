@@ -1,0 +1,19 @@
+apiVersion: my.api.group/v1alpha1
+kind: MyAppResource
+metadata:
+  name: flerb
+spec:
+  replicaCount: 1
+  resources:
+    memoryRequest: 32Mi
+    memoryLimit: 64Mi
+    cpuRequest: 100m
+    cpuLimit: 200m
+  image:
+    repository: ghcr.io/stefanprodan/podinfo
+    tag: latest
+  ui:
+    color: "#c4ace3"
+    message: "flerb says hello"
+  redis:
+    enabled: false
