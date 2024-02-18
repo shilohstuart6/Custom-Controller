@@ -13,14 +13,7 @@ and, optionally, a redis cache.
 - kubectl version v1.11.3+.
 - Access to a Kubernetes v1.11.3+ cluster.
 
-### To Deploy on the cluster
-
-**Install the CRDs into the cluster:**
-
-```sh
-make install
-```
-
+### Deploy to cluster
 **Deploy the Manager to the cluster with the image specified by `IMG`:**
 
 ```sh
@@ -30,35 +23,25 @@ make deploy IMG=ghcr.io/shilohstuart6/custom-controller:latest
 > **NOTE**: If you encounter RBAC errors, you may need to grant yourself cluster-admin 
 privileges or be logged in as admin.
 
-**Create instances of your solution**
-You can apply the samples (examples) from the config/sample:
+**Create custom resources:**
+
+Apply all samples from config/sample
 
 ```sh
 kubectl apply -k config/samples/
 ```
 
-or to apply individually:
+or apply individually
 
 ```sh
 kubectl apply -f config/samples/whatever_myappresource.yaml
 ```
-### Test
-**Run the test suite:**
-```sh
-make test
-```
 
 ### To Uninstall
-**Delete the instances (CRs) from the cluster:**
+**Delete the custom resources from the cluster:**
 
 ```sh
 kubectl delete -k config/samples/
-```
-
-**Delete the APIs(CRDs) from the cluster:**
-
-```sh
-make uninstall
 ```
 
 **UnDeploy the controller from the cluster:**
@@ -67,39 +50,51 @@ make uninstall
 make undeploy
 ```
 
-### Build and Push new Image
-**Build and push your image to the location specified by `IMG`:**
+### Test
+**Run the test suite:**
+```sh
+make test
+```
+
+## Alternate Installation
+**Deploy the controller**
+
+```sh
+kubectl apply -f https://raw.githubusercontent.com/shilohstuart6/Custom-Controller/main/dist/install.yaml
+```
+
+**Deploy sample custom resource**
+
+```sh
+kubectl apply -f https://raw.githubusercontent.com/shilohstuart6/Custom-Controller/main/config/samples/whatever_myappresource.yaml
+```
+**Delete the controller**
+
+```sh
+kubectl delete -f https://raw.githubusercontent.com/shilohstuart6/Custom-Controller/main/dist/install.yaml
+```
+
+**Delete sample custom resource**
+
+```sh
+kubectl delete -f https://raw.githubusercontent.com/shilohstuart6/Custom-Controller/main/config/samples/whatever_myappresource.yaml
+```
+
+## Build Commands
+**Build and push image to the location specified by `IMG`:**
 
 ```sh
 make docker-build docker-push IMG=ghcr.io/shilohstuart6/custom-controller:latest
 ```
 
-**NOTE:** This image ought to be published in the personal registry you specified. 
-And it is required to have access to pull the image from the working environment. 
-Make sure you have the proper permission to the registry if the above commands don’t work.
-
-## Project Distribution
-
-Following are the steps to build the installer and distribute this project to users.
-
-1. Build the installer for the image built and published in the registry:
-
+**Build installer for the image:**
 ```sh
 make build-installer IMG=ghcr.io/shilohstuart6/custom-controller:latest
 ```
 
-NOTE: The makefile target mentioned above generates an 'install.yaml'
-file in the dist directory. This file contains all the resources built
-with Kustomize, which are necessary to install this project without
-its dependencies.
-
-2. Using the installer
-
-Users can just run kubectl apply -f <URL for YAML BUNDLE> to install the project, i.e.:
-
-```sh
-kubectl apply -f https://raw.githubusercontent.com/shilohstuart6/custom-controller/latest/dist/install.yaml
-```
+**NOTE:** This image ought to be published in the personal registry you specified. 
+And it is required to have access to pull the image from the working environment. 
+Make sure you have the proper permission to the registry if the above commands don’t work.
 
 ## License
 
