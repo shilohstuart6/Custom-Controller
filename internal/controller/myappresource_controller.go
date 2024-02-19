@@ -176,12 +176,12 @@ func (r *MyAppResourceReconciler) createSpecNoRedis(mar myv1alpha1.MyAppResource
 							Command: []string{"./podinfo", "--port=9898"},
 							Resources: corev1.ResourceRequirements{
 								Limits: corev1.ResourceList{
-									corev1.ResourceCPU:    memR,
+									corev1.ResourceCPU:    cpuL,
 									corev1.ResourceMemory: memL,
 								},
 								Requests: corev1.ResourceList{
 									corev1.ResourceCPU:    cpuR,
-									corev1.ResourceMemory: cpuL,
+									corev1.ResourceMemory: memR,
 								},
 							},
 							Ports: []corev1.ContainerPort{
@@ -265,12 +265,12 @@ func (r *MyAppResourceReconciler) createSpecWithRedis(mar myv1alpha1.MyAppResour
 							Command: []string{"redis-server"},
 							Resources: corev1.ResourceRequirements{
 								Limits: corev1.ResourceList{
-									corev1.ResourceCPU:    memR,
+									corev1.ResourceCPU:    cpuL,
 									corev1.ResourceMemory: memL,
 								},
 								Requests: corev1.ResourceList{
 									corev1.ResourceCPU:    cpuR,
-									corev1.ResourceMemory: cpuL,
+									corev1.ResourceMemory: memR,
 								},
 							},
 							Ports: []corev1.ContainerPort{
@@ -297,12 +297,12 @@ func (r *MyAppResourceReconciler) createSpecWithRedis(mar myv1alpha1.MyAppResour
 							Command: []string{"./podinfo", "--port=9898"},
 							Resources: corev1.ResourceRequirements{
 								Limits: corev1.ResourceList{
-									corev1.ResourceCPU:    memR,
+									corev1.ResourceCPU:    cpuL,
 									corev1.ResourceMemory: memL,
 								},
 								Requests: corev1.ResourceList{
 									corev1.ResourceCPU:    cpuR,
-									corev1.ResourceMemory: cpuL,
+									corev1.ResourceMemory: memR,
 								},
 							},
 							Ports: []corev1.ContainerPort{
