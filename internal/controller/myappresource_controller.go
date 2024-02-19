@@ -108,10 +108,26 @@ func (r *MyAppResourceReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 }
 
 func (r *MyAppResourceReconciler) createSpec(mar myv1alpha1.MyAppResource) (appsv1.Deployment, error) {
+	r.defaultResourcesIfOmitted(&mar)
 	if mar.Spec.Redis.Enabled {
 		return r.createSpecWithRedis(mar)
 	}
 	return r.createSpecNoRedis(mar)
+}
+
+func (r *MyAppResourceReconciler) defaultResourcesIfOmitted(mar *myv1alpha1.MyAppResource) {
+	if mar.Spec.Resources.MemoryRequest == "" {
+		mar.Spec.Resources.MemoryRequest = "32Mi"
+	}
+	if mar.Spec.Resources.MemoryLimit == "" {
+		mar.Spec.Resources.MemoryLimit = "64Mi"
+	}
+	if mar.Spec.Resources.CpuRequest == "" {
+		mar.Spec.Resources.CpuRequest = "100m"
+	}
+	if mar.Spec.Resources.CpuLimit == "" {
+		mar.Spec.Resources.CpuLimit = "200m"
+	}
 }
 
 func (r *MyAppResourceReconciler) createSpecNoRedis(mar myv1alpha1.MyAppResource) (appsv1.Deployment, error) {
