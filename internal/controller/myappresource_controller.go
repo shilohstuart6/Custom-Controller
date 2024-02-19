@@ -115,6 +115,23 @@ func (r *MyAppResourceReconciler) createSpec(mar myv1alpha1.MyAppResource) (apps
 }
 
 func (r *MyAppResourceReconciler) createSpecNoRedis(mar myv1alpha1.MyAppResource) (appsv1.Deployment, error) {
+	memR, err := resource.ParseQuantity(mar.Spec.Resources.MemoryRequest)
+	if err != nil {
+		return appsv1.Deployment{}, err
+	}
+	memL, err := resource.ParseQuantity(mar.Spec.Resources.MemoryLimit)
+	if err != nil {
+		return appsv1.Deployment{}, err
+	}
+	cpuR, err := resource.ParseQuantity(mar.Spec.Resources.CpuRequest)
+	if err != nil {
+		return appsv1.Deployment{}, err
+	}
+	cpuL, err := resource.ParseQuantity(mar.Spec.Resources.CpuLimit)
+	if err != nil {
+		return appsv1.Deployment{}, err
+	}
+
 	d := appsv1.Deployment{
 		TypeMeta: metav1.TypeMeta{Kind: "Deployment"},
 		ObjectMeta: metav1.ObjectMeta{
@@ -143,12 +160,12 @@ func (r *MyAppResourceReconciler) createSpecNoRedis(mar myv1alpha1.MyAppResource
 							Command: []string{"./podinfo", "--port=9898"},
 							Resources: corev1.ResourceRequirements{
 								Limits: corev1.ResourceList{
-									corev1.ResourceCPU:    resource.MustParse(mar.Spec.Resources.CpuLimit),
-									corev1.ResourceMemory: resource.MustParse(mar.Spec.Resources.MemoryLimit),
+									corev1.ResourceCPU:    memR,
+									corev1.ResourceMemory: memL,
 								},
 								Requests: corev1.ResourceList{
-									corev1.ResourceCPU:    resource.MustParse(mar.Spec.Resources.CpuRequest),
-									corev1.ResourceMemory: resource.MustParse(mar.Spec.Resources.MemoryRequest),
+									corev1.ResourceCPU:    cpuR,
+									corev1.ResourceMemory: cpuL,
 								},
 							},
 							Ports: []corev1.ContainerPort{
@@ -187,6 +204,23 @@ func (r *MyAppResourceReconciler) createSpecNoRedis(mar myv1alpha1.MyAppResource
 }
 
 func (r *MyAppResourceReconciler) createSpecWithRedis(mar myv1alpha1.MyAppResource) (appsv1.Deployment, error) {
+	memR, err := resource.ParseQuantity(mar.Spec.Resources.MemoryRequest)
+	if err != nil {
+		return appsv1.Deployment{}, err
+	}
+	memL, err := resource.ParseQuantity(mar.Spec.Resources.MemoryLimit)
+	if err != nil {
+		return appsv1.Deployment{}, err
+	}
+	cpuR, err := resource.ParseQuantity(mar.Spec.Resources.CpuRequest)
+	if err != nil {
+		return appsv1.Deployment{}, err
+	}
+	cpuL, err := resource.ParseQuantity(mar.Spec.Resources.CpuLimit)
+	if err != nil {
+		return appsv1.Deployment{}, err
+	}
+
 	d := appsv1.Deployment{
 		TypeMeta: metav1.TypeMeta{Kind: "Deployment"},
 		ObjectMeta: metav1.ObjectMeta{
@@ -215,12 +249,12 @@ func (r *MyAppResourceReconciler) createSpecWithRedis(mar myv1alpha1.MyAppResour
 							Command: []string{"redis-server"},
 							Resources: corev1.ResourceRequirements{
 								Limits: corev1.ResourceList{
-									corev1.ResourceCPU:    resource.MustParse(mar.Spec.Resources.CpuLimit),
-									corev1.ResourceMemory: resource.MustParse(mar.Spec.Resources.MemoryLimit),
+									corev1.ResourceCPU:    memR,
+									corev1.ResourceMemory: memL,
 								},
 								Requests: corev1.ResourceList{
-									corev1.ResourceCPU:    resource.MustParse(mar.Spec.Resources.CpuRequest),
-									corev1.ResourceMemory: resource.MustParse(mar.Spec.Resources.MemoryRequest),
+									corev1.ResourceCPU:    cpuR,
+									corev1.ResourceMemory: cpuL,
 								},
 							},
 							Ports: []corev1.ContainerPort{
@@ -247,12 +281,12 @@ func (r *MyAppResourceReconciler) createSpecWithRedis(mar myv1alpha1.MyAppResour
 							Command: []string{"./podinfo", "--port=9898"},
 							Resources: corev1.ResourceRequirements{
 								Limits: corev1.ResourceList{
-									corev1.ResourceCPU:    resource.MustParse(mar.Spec.Resources.CpuLimit),
-									corev1.ResourceMemory: resource.MustParse(mar.Spec.Resources.MemoryLimit),
+									corev1.ResourceCPU:    memR,
+									corev1.ResourceMemory: memL,
 								},
 								Requests: corev1.ResourceList{
-									corev1.ResourceCPU:    resource.MustParse(mar.Spec.Resources.CpuRequest),
-									corev1.ResourceMemory: resource.MustParse(mar.Spec.Resources.MemoryRequest),
+									corev1.ResourceCPU:    cpuR,
+									corev1.ResourceMemory: cpuL,
 								},
 							},
 							Ports: []corev1.ContainerPort{
